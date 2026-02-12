@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EtudiantService } from './etudiant.service';
 import { CreateEtudiantDto } from './dto/create-etudiant.dto';
 import { UpdateEtudiantDto } from './dto/update-etudiant.dto';
@@ -22,8 +22,15 @@ export class EtudiantController {
       })
     }))
 
- async create(@Body() createEtudiantDto: CreateEtudiantDto ,@Res() response) {
+ async create(@Body() createEtudiantDto: CreateEtudiantDto ,@Res() response ,@UploadedFile() photo) {
    try {
+
+    
+createEtudiantDto.photo=photo? photo.filename : null
+
+
+
+
          const newetudiant=await this.etudiantService.create(createEtudiantDto)
          return response.status(HttpStatus.CREATED).json({
            message:"etudiant create avec succes",newetudiant
