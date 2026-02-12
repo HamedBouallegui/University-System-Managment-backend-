@@ -13,8 +13,8 @@ matricule:string
 @Column()
 niveau:string
 
-
-
+@Column()
+photo:string
 
 
 

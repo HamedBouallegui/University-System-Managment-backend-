@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseInterceptors } from '@nestjs/common';
 import { EtudiantService } from './etudiant.service';
 import { CreateEtudiantDto } from './dto/create-etudiant.dto';
 import { UpdateEtudiantDto } from './dto/update-etudiant.dto';
 import { response } from 'express';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import {diskStorage} from "multer"
+import { extname } from 'path';
 @Controller('etudiant')
 export class EtudiantController {
   constructor(private readonly etudiantService: EtudiantService) {}
@@ -12,6 +14,14 @@ export class EtudiantController {
 
 
   @Post()
+@UseInterceptors(FileInterceptor("photo", {
+      storage:diskStorage({
+        destination: './stockage',
+        filename: (req, file, cb) => {
+          cb(null , `${new Date().getTime()}${extname(file.originalname)}`)}
+      })
+    }))
+
  async create(@Body() createEtudiantDto: CreateEtudiantDto ,@Res() response) {
    try {
          const newetudiant=await this.etudiantService.create(createEtudiantDto)
@@ -22,7 +32,9 @@ export class EtudiantController {
         return response.status(HttpStatus.BAD_REQUEST).json({
    statusCode : 400,
    message :"error lors de la creation de etudiant "+error.message
-       })}  }
+       })} 
+      
+      }
 
 
 
@@ -107,4 +119,19 @@ message :"etudiant not found"+error.message
     })
    }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 }

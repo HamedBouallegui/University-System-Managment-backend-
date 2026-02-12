@@ -13,5 +13,10 @@ export class CreateEtudiantDto extends CreateUserDto {
 
 
 
+ 
+@IsNotEmpty()
+ @IsString()
+photo:String
+
 
 }
