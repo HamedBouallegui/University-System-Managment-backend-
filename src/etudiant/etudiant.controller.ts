@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EtudiantService } from './etudiant.service';
 import { CreateEtudiantDto } from './dto/create-etudiant.dto';
 import { UpdateEtudiantDto } from './dto/update-etudiant.dto';
 import { response } from 'express';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import {diskStorage} from "multer"
+import { extname } from 'path';
 @Controller('etudiant')
 export class EtudiantController {
   constructor(private readonly etudiantService: EtudiantService) {}
@@ -12,8 +14,23 @@ export class EtudiantController {
 
 
   @Post()
- async create(@Body() createEtudiantDto: CreateEtudiantDto ,@Res() response) {
+@UseInterceptors(FileInterceptor("photo", {
+      storage:diskStorage({
+        destination: './stockage',
+        filename: (req, file, cb) => {
+          cb(null , `${new Date().getTime()}${extname(file.originalname)}`)}
+      })
+    }))
+
+ async create(@Body() createEtudiantDto: CreateEtudiantDto ,@Res() response ,@UploadedFile() photo) {
    try {
+
+    
+createEtudiantDto.photo=photo? photo.filename : null
+
+
+
+
          const newetudiant=await this.etudiantService.create(createEtudiantDto)
          return response.status(HttpStatus.CREATED).json({
            message:"etudiant create avec succes",newetudiant
@@ -22,7 +39,9 @@ export class EtudiantController {
         return response.status(HttpStatus.BAD_REQUEST).json({
    statusCode : 400,
    message :"error lors de la creation de etudiant "+error.message
-       })}  }
+       })} 
+      
+      }
 
 
 
@@ -72,8 +91,27 @@ message :"etudiant  not found"+error.message
 
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() updateEtudiantDto: UpdateEtudiantDto ,@Res() response) {
+@UseInterceptors(FileInterceptor("photo", {
+      storage:diskStorage({
+        destination: './stockage',
+        filename: (req, file, cb) => {
+          cb(null , `${new Date().getTime()}${extname(file.originalname)}`)}
+      })
+    }))
+
+
+
+
+
+  async update(@Param('id') id: number, @Body() updateEtudiantDto: UpdateEtudiantDto ,@Res() response ,@UploadedFile() photo) {
   try {
+
+const newphoto=photo? photo.filename : null
+if(newphoto){
+  updateEtudiantDto.photo=newphoto
+}
+
+    updateEtudiantDto.photo=photo? photo.filename : null
     const etudiant=await this.etudiantService.update(id,updateEtudiantDto)
     return response.status(HttpStatus.OK).json({
         message:" etudaint update avec succsefly",etudiant
@@ -85,6 +123,13 @@ statusCode : 400,
 message :"etudiant not found"+error.message
     })
    }  }
+
+
+
+
+
+
+
 
 
 
@@ -107,4 +152,19 @@ message :"etudiant not found"+error.message
     })
    }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 }

@@ -57,6 +57,9 @@ message :"user not found"+error.message
    }
   }
 
+
+
+
   @Patch(':id')
   async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto,@Res()response) {
      try {
@@ -73,6 +76,9 @@ message :"user not found"+error.message
    }
   }
 
+
+
+  
   @Delete(':id')
   async remove(@Param('id') id: number , @Res()response) {
       try {

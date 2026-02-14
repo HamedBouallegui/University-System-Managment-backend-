@@ -7,7 +7,11 @@ import { DepartementModule } from './departement/departement.module';
 import { EtudiantModule } from './etudiant/etudiant.module';
 import { ProfesseurModule } from './professeur/professeur.module';
 import { ChefDepartementModule } from './chef-departement/chef-departement.module';
-import { SpecialiteModule } from './specialite/specialite.module';
+import { AnnonceModule } from './annonce/annonce.module';
+import { SalleModule } from './salle/salle.module';
+import { SeanceModule } from './seance/seance.module';
+import { AnneeUniversitaireModule } from './annee-universitaire/annee-universitaire.module';
+import { SemestreModule } from './semestre/semestre.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -15,13 +19,13 @@ type:"postgres",
 host:"localhost",
 port:5432,
 username:"postgres",
-password:"12345",
+password:"1234",
 database:"projet1",
 autoLoadEntities:true,
 entities:[__dirname + "/**/*.entity{.ts,.js}"],
 synchronize:true,
 
-  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, SpecialiteModule],
+  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule],
   controllers: [AppController],
   providers: [AppService],
 })
