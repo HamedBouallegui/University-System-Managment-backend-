@@ -12,6 +12,7 @@ import { SalleModule } from './salle/salle.module';
 import { SeanceModule } from './seance/seance.module';
 import { AnneeUniversitaireModule } from './annee-universitaire/annee-universitaire.module';
 import { SemestreModule } from './semestre/semestre.module';
+import { EvaluationModule } from './evaluation/evaluation.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -19,13 +20,13 @@ type:"postgres",
 host:"localhost",
 port:5432,
 username:"postgres",
-password:"1234",
+password:"12345",
 database:"projet1",
 autoLoadEntities:true,
 entities:[__dirname + "/**/*.entity{.ts,.js}"],
 synchronize:true,
 
-  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule],
+  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule],
   controllers: [AppController],
   providers: [AppService],
 })

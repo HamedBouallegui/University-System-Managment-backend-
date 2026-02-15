@@ -4,8 +4,6 @@ import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Notification } from './entities/notification.entity';
 import { Repository } from 'typeorm';
-import { Specialite } from 'src/specialite/entities/specialite.entity';
-import { UpdateSpecialiteDto } from 'src/specialite/dto/update-specialite.dto';
 
 @Injectable()
 export class NotificationService {
