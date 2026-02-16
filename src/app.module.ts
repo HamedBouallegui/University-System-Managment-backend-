@@ -13,6 +13,7 @@ import { SeanceModule } from './seance/seance.module';
 import { AnneeUniversitaireModule } from './annee-universitaire/annee-universitaire.module';
 import { SemestreModule } from './semestre/semestre.module';
 import { EvaluationModule } from './evaluation/evaluation.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -26,7 +27,7 @@ autoLoadEntities:true,
 entities:[__dirname + "/**/*.entity{.ts,.js}"],
 synchronize:true,
 
-  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule],
+  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule , NotificationModule],
   controllers: [AppController],
   providers: [AppService],
 })

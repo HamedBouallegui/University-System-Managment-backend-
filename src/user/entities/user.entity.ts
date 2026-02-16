@@ -1,5 +1,6 @@
 import { BaseEntity, BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
 import * as argon2 from 'argon2'
+import { Notification } from "src/notification/entities/notification.entity";
 
 @Entity("user")
 @TableInheritance({column:{type:"varchar", name:"role"}})
@@ -22,6 +23,8 @@ async hashPassword(){
         this.password=await argon2.hash(this.password);
     }
 }
-
-
+@OneToMany(() => Notification, notification => notification.user,{
+    cascade:true,
+})
+notifications: Notification[];
 }

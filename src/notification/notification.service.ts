@@ -3,20 +3,27 @@ import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Notification } from './entities/notification.entity';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class NotificationService {
   constructor(
     @InjectRepository(Notification)
+
      private readonly notificationRepository:Repository<Notification>,
+     @InjectRepository(User) private readonly userRepository:Repository<User>
   ){
 
   }
 
 
   async create(createNotificationDto: CreateNotificationDto):Promise<Notification> {
-       const newnotification = await this.notificationRepository.create(createNotificationDto)
+    const user = await this.userRepository.findOne({where:{id:createNotificationDto.user}, relations:["notifications"]})
+    if(!user){
+      throw new NotFoundException("user not found")
+    }
+       const newnotification = await this.notificationRepository.create({...createNotificationDto,user})
     return this.notificationRepository.save(newnotification)
     }
 
@@ -48,7 +55,7 @@ export class NotificationService {
    if(!notification){
      throw new NotFoundException("notification not found")
    }
-   const updatenotification= await this.notificationRepository.preload({...UpdateNotificationDto,id})
+   const updatenotification= await this.notificationRepository.preload({...UpdateNotificationDto as DeepPartial<Notification>,id})
    if(!updatenotification){
      throw new NotFoundException(`can not update a #${id} notification`)
    

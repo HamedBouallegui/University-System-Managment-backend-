@@ -1,4 +1,4 @@
-import { IsBoolean, IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { NotificationType } from "../entities/notification.entity";
 
 export class CreateNotificationDto {
@@ -15,4 +15,7 @@ export class CreateNotificationDto {
 
   @IsBoolean()
   lu: boolean;
+  @IsNumber()
+  @IsOptional()
+  user:number;
 }

@@ -1,5 +1,5 @@
 import { User } from "src/user/entities/user.entity";
-import { Column, PrimaryGeneratedColumn, Entity, OneToMany } from "typeorm";
+import { Column, PrimaryGeneratedColumn, Entity, OneToMany, JoinColumn, ManyToOne } from "typeorm";
 
 export enum NotificationType {
   NOTE = "NOTE",
@@ -24,11 +24,13 @@ export class Notification {
     type: "enum",
     enum: NotificationType,
   })
-
+  type: NotificationType;
   @Column()
   lu: boolean;
 
-  @OneToMany(() => User, user => user.notification,{
+  @ManyToOne(() => User, user => user.notifications,{
     onDelete:'CASCADE'
 })
+@JoinColumn({name:"user"})
+  user: User;
 }
