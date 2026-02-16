@@ -1,4 +1,5 @@
-import { Column, PrimaryGeneratedColumn, Entity } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, PrimaryGeneratedColumn, Entity, OneToMany } from "typeorm";
 
 export enum NotificationType {
   NOTE = "NOTE",
@@ -26,4 +27,8 @@ export class Notification {
 
   @Column()
   lu: boolean;
+
+  @OneToMany(() => User, user => user.notification,{
+    onDelete:'CASCADE'
+})
 }
